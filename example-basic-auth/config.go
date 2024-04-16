@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/envoyproxy/envoy/contrib/golang/filters/http/source/go/pkg/api"
+	"github.com/envoyproxy/envoy/contrib/golang/common/go/api"
 	"github.com/envoyproxy/envoy/contrib/golang/filters/http/source/go/pkg/http"
 	"google.golang.org/protobuf/types/known/anypb"
 
@@ -9,8 +9,7 @@ import (
 )
 
 func init() {
-	http.RegisterHttpFilterConfigFactory("basic-auth", configFactory)
-	http.RegisterHttpFilterConfigParser(&parser{})
+	http.RegisterHttpFilterConfigFactoryAndParser("basic-auth", configFactory, &parser{})
 }
 
 type config struct {
@@ -21,10 +20,10 @@ type config struct {
 type parser struct {
 }
 
-func (p *parser) Parse(any *anypb.Any) (interface{}, error) {
+func (p *parser) Parse(any *anypb.Any, callback api.ConfigCallbackHandler) (interface{}, error) {
 	configStruct := &xds.TypedStruct{}
 	if err := any.UnmarshalTo(configStruct); err != nil {
-		return nil, err
+		return nil, nil
 	}
 
 	v := configStruct.Value
@@ -35,6 +34,9 @@ func (p *parser) Parse(any *anypb.Any) (interface{}, error) {
 	if password, ok := v.AsMap()["password"].(string); ok {
 		conf.password = password
 	}
+	callback.DefineCounterMetric("test")
+	callback.DefineGaugeMetric("testxx")
+
 	return conf, nil
 }
 
