@@ -4,12 +4,27 @@ import (
 	"encoding/base64"
 	"strings"
 
-	"github.com/envoyproxy/envoy/contrib/golang/filters/http/source/go/pkg/api"
+	"github.com/envoyproxy/envoy/contrib/golang/common/go/api"
 )
 
 type filter struct {
 	callbacks api.FilterCallbackHandler
 	config    *config
+}
+
+func (f *filter) OnLog() {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (f *filter) OnLogDownstreamStart() {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (f *filter) OnLogDownstreamPeriodic() {
+	//TODO implement me
+	panic("implement me")
 }
 
 const secretKey = "secret"
@@ -52,7 +67,7 @@ func (f *filter) verify(header api.RequestHeaderMap) (bool, string) {
 func (f *filter) DecodeHeaders(header api.RequestHeaderMap, endStream bool) api.StatusType {
 	if ok, msg := f.verify(header); !ok {
 		// TODO: set the WWW-Authenticate response header
-		f.callbacks.SendLocalReply(401, msg, map[string]string{}, 0, "bad-request")
+		f.callbacks.SendLocalReply(401, msg, map[string][]string{}, 0, "bad-request")
 		return api.LocalReply
 	}
 	return api.Continue
