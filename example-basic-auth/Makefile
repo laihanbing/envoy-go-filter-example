@@ -2,7 +2,7 @@
 build:
 	docker run --rm -v `pwd`:/go/src/go-filter -w /go/src/go-filter \
 		-e GOPROXY=https://goproxy.cn \
-		golang:1.19 \
+        reg.docker.alibaba-inc.com/infrasec/golang:1.21.2-linux-arm64-20240412_aarch64 \
 		go build -v -o libgolang.so -buildmode=c-shared .
 
 run:
