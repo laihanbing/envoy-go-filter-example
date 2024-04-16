@@ -1,10 +1,11 @@
 module envoy-go-filer.example/example-basic-auth
 
-go 1.19
+go 1.18
 
 require (
 	github.com/cncf/xds/go v0.0.0-20230112175826-46e39c7b9b43
-	github.com/envoyproxy/envoy v1.26.0
+	github.com/envoyproxy/envoy v1.29.3
+	google.golang.org/protobuf v1.32.0
 )
 
 require (
@@ -15,5 +16,4 @@ require (
 	golang.org/x/text v0.3.0 // indirect
 	google.golang.org/genproto v0.0.0-20190819201941-24fa4b261c55 // indirect
 	google.golang.org/grpc v1.25.1 // indirect
-	google.golang.org/protobuf v1.30.0
 )
